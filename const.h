@@ -7,6 +7,8 @@
 
 namespace APP_EXIT_CODE {
     static const int openFileError = 1;
+    static const int fileNameToLong = 2;
+    static const int fileNameEndWithDot = 3;
 }
 
 namespace LOGICAL_OPEATION_NAME {
@@ -20,7 +22,16 @@ namespace LOGICAL_OPEATION_NAME {
 
 namespace DEFAULT_VALUES{
     static const char *binaryFilePath = "/Users/yurabraiko/temp/IDZ2_BINARY_OUT.bin";
+    static const char *textResultFilePath = "/Users/yurabraiko/temp/IDZ2_TEXT_RESULT_OUT.txt";
     const unsigned short maxNum = 65535;
 }
+
+namespace LIMITS{
+    static const int maxFileNameSize = 37;
+    }
+
+enum command{
+    eAnd,eOr,eXort,eLeftShift,eRightShift,eIversion,eFinish
+};
 
 #endif //IDZ2_CONST_H

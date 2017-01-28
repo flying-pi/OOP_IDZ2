@@ -17,7 +17,7 @@ unsigned short LOGIKA16::logicalAnd(unsigned short a, unsigned short b) {
 }
 
 unsigned short LOGIKA16::logicalOr(unsigned short a, unsigned short b) {
-    return a & b;
+    return a | b;
 }
 
 unsigned short LOGIKA16::logicalXor(unsigned short a, unsigned short b) {
@@ -80,7 +80,7 @@ LOGIKA16::applyAllLogicalOperation(vector<char const *> &operationNames, vector<
         for (int n = 0; n < nums.size(); n += (isInvarsion ? 1 : 2)) {
 
             if (isInvarsion) {
-                printResult(operationNames[i], (this->*(functions[i]))(nums[n], 0), nums[n]);
+                printer->printResult(operationNames[i], (this->*(functions[i]))(nums[n], 0), nums[n]);
                 continue;
             }
             a = nums[n];
@@ -88,9 +88,23 @@ LOGIKA16::applyAllLogicalOperation(vector<char const *> &operationNames, vector<
                 b = nums[n + 1];
             else
                 b = 0;
-            printResult(operationNames[i], (this->*(functions[i]))(a, b), a, b);
+            printer->printResult(operationNames[i], (this->*(functions[i]))(a, b), a, b);
 
         }
     }
 
+}
+
+LOGIKA16::LOGIKA16() {
+    printer = new PrintComposer();
+    printer->addConsolePrinter();
+    printer->addFilePrinter();
+}
+
+LOGIKA16::~LOGIKA16() {
+delete printer;
+}
+
+IPrinter *LOGIKA16::getPriinter() {
+    return printer;
 }

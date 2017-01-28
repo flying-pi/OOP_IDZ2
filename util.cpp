@@ -3,37 +3,74 @@
 //
 
 #include "util.h"
+#include "const.h"
+#include <iostream>
+#include <string>
+#include <ostream>
+#include <iomanip>
 
-void getbin(unsigned short n) {
+using namespace std;
 
-    for (int i = 0; i < 16; i++) {
-        if (n & 0x8000)
-            putc('1', stdout);
-        else
-            putc('0', stdout);
-        n = n << 1;
+unsigned short parseAsHex(char *buf, int size) {
+    int result = 0;
+    int order = 1;
+    for (int i = size - 1; i >= 0 && buf[i] != 'x'; i--) {
+        int value = buf[i];
+        if (value <= '9' && value >= '0')
+            value = (((int) value) - ((int) '0'));
+        else if (value >= 'a' && value <= 'f') {
+            value = (((int) value) - ((int) 'a')) + 10;
+        } else {
+            throw "нецифровой символ";
+        }
+        result += order * value;
+        if (result > DEFAULT_VALUES::maxNum) {
+            throw "переполнение";
+        }
+        order *= 16;
     }
+    return (unsigned short) result;
 }
 
-void printResult(const char *str, const unsigned short &result, const unsigned short &firstArgument,
-                 const unsigned short &secondArgument) {
-    printf("Result:\n");
-    printf("\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020%5hu 0x%04x ", firstArgument, firstArgument);
-    getbin(firstArgument);
-    printf("%s%5hu 0x%04x ", str, secondArgument, secondArgument);
-    getbin(secondArgument);
-    printf("\n=====================================\n");
-    printf("\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020%5hu 0x%04x ", result, result);
-    getbin(result);
-    printf("\n\n");
+unsigned short parseAsDex(char *buf, int size) {
+    int result = 0;
+    int order = 1;
+    if (buf[0] == '0') {
+        for (int i = 0; i < size; i++) {
+            if (buf[i] != '0')
+                throw "избыточное количество символов";
+        }
+    }
+    for (int i = size - 1; i >= 0 && buf[i] != 'x'; i--) {
+        int value = buf[i];
+        if (value <= '9' && value >= '0')
+            value = (((int) value) - ((int) '0'));
+        else
+            throw "нецифровой символ";
+        result += order * value;
+        if (result > DEFAULT_VALUES::maxNum) {
+            throw "переполнение";
+        }
+        order *= 10;
+    }
+    return (unsigned short) result;
 }
 
-void printResult(const char *str, const unsigned short &val3, const unsigned short &val1) {
-    printf("Result:\n");
-    printf("%s%5hu 0x%04x ", str, val1, val1);
-    getbin(val1);
-    printf("\n======================================\n");
-    printf("\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020%5hu 0x%04x ", val3, val3);
-    getbin(val3);
-    printf("\n\n");
+unsigned short readFromConsole() {
+    int bufSize = 1024;
+    char *buf = new char[bufSize];
+    std::cin >> buf;
+    for (int i = 0; i < bufSize; i++)
+        buf[i] = (char) tolower(buf[i]);
+    unsigned short result = 0;
+    int inputStrSize = (int) strlen(buf);
+    if (inputStrSize <2 ||(buf[1] >= '0' && buf[1] <= '9')) {
+        result = parseAsDex(buf, inputStrSize);
+    } else if (buf[1] == 'x') {
+        result = parseAsHex(buf, inputStrSize);
+    } else {
+        throw "недопустимый дескриптор системы счисления";
+    }
+    delete buf;
+    return result;
 }

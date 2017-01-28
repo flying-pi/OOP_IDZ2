@@ -3,7 +3,7 @@ project(IDZ2)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp LOGIKA16.cpp LOGIKA16.h util.h util.cpp const.h)
+set(SOURCE_FILES main.cpp LOGIKA16.cpp LOGIKA16.h util.h util.cpp const.h OutPrinter.h OutPrinter.cpp TermianlUserInterface.cpp TermianlUserInterface.h)
 add_executable(IDZ2 ${SOURCE_FILES})
 
 
