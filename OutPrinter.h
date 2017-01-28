@@ -19,6 +19,10 @@ public:
 
     void printResult(const char *str, const unsigned int &val3, const unsigned int &val1);
 
+    void printInstruction();
+
+    void printMessage(const char*message);
+
     virtual ~IPrinter() {
 
     }

@@ -14,12 +14,14 @@ PrintComposer *PrintComposer::add(IPrinter *newPrinter) {
 }
 
 void PrintComposer::printResult(const char *str, const unsigned int &operationResult, const unsigned int &firstArgument,
-                               const unsigned int &secondArgument) {
+                                const unsigned int &secondArgument) {
     for (auto i:printers)
         i->printResult(str, operationResult, firstArgument, secondArgument);
 
 }
-void PrintComposer::printResult(const char *str, const unsigned int &operationResult, const unsigned int &firstArgument) {
+
+void
+PrintComposer::printResult(const char *str, const unsigned int &operationResult, const unsigned int &firstArgument) {
     for (auto i:printers)
         i->printResult(str, operationResult, firstArgument);
 
@@ -39,25 +41,29 @@ void IPrinter::getbin(unsigned int n, char *out) {
 }
 
 void
-IPrinter::printResult(const char *str, const unsigned int &operationResult, const unsigned int &firstArgument, const unsigned int &secondArgument) {
+IPrinter::printResult(const char *str, const unsigned int &operationResult, const unsigned int &firstArgument,
+                      const unsigned int &secondArgument) {
     ostream *out = getOutStream();
     if (out == nullptr)
         return;
 
     char *binaryValue = new char[17];
     (*out) << ("ОТВЕТ:\n");
-    (*out) << setfill(' ') << setw(18) << dec << firstArgument << " 0x" << setfill('0') << setw(8) << hex << firstArgument << " ";
+    (*out) << setfill(' ') << setw(18) << dec << firstArgument << " 0x" << setfill('0') << setw(8) << hex
+           << firstArgument << " ";
     getbin(firstArgument, binaryValue);
     (*out) << binaryValue;
-    (*out) << str << setfill(' ') << setw(10) << dec << secondArgument << " 0x" << setfill('0') << setw(8) << hex << secondArgument
+    (*out) << str << setfill(' ') << setw(10) << dec << secondArgument << " 0x" << setfill('0') << setw(8) << hex
+           << secondArgument
            << " ";
     getbin(secondArgument, binaryValue);
     (*out) << binaryValue;
     (*out) << "\n==============================================\n";
-    (*out) << setfill(' ') << setw(18) << dec << operationResult << " 0x" << setfill('0') << setw(8) << hex << operationResult << " ";
+    (*out) << setfill(' ') << setw(18) << dec << operationResult << " 0x" << setfill('0') << setw(8) << hex
+           << operationResult << " ";
     getbin(operationResult, binaryValue);
     (*out) << binaryValue;
-    (*out)<<"\n";
+    (*out) << "\n";
 
     delete binaryValue;
 }
@@ -71,16 +77,39 @@ void IPrinter::printResult(const char *str, const unsigned int &operationResult,
     char *binaryValue = new char[17];
     (*out) << ("ОТВЕТ:\n");
 
-    (*out) << str << setfill(' ') << setw(9) << dec << firstArgument << " 0x" << setfill('0') << setw(8) << hex << firstArgument << " ";
+    (*out) << str << setfill(' ') << setw(9) << dec << firstArgument << " 0x" << setfill('0') << setw(8) << hex
+           << firstArgument << " ";
     getbin(firstArgument, binaryValue);
     (*out) << binaryValue;
     (*out) << "\n==============================================\n";
-    (*out) << setfill(' ') << setw(18) << dec << operationResult << " 0x" << setfill('0') << setw(8) << hex << operationResult << " ";
+    (*out) << setfill(' ') << setw(18) << dec << operationResult << " 0x" << setfill('0') << setw(8) << hex
+           << operationResult << " ";
     getbin(operationResult, binaryValue);
     (*out) << binaryValue;
-    (*out)<<"\n";
+    (*out) << "\n";
 
     delete binaryValue;
+}
+
+void IPrinter::printInstruction() {
+    ostream *out = getOutStream();
+    if (out == nullptr)
+        return;
+    (*out) << ("ТЕСТИРОВАНИЕ ПОРАЗР.ЛОГИЧИСКИХ ОПЕРАЦИЙ\n"\
+            " 1-выполнение операции И (&)\n"\
+            " 2-выполнение операции ИЛИ (|)\n"\
+            " 3-выполнение операции ИСКЛ.ИЛИ (^)\n"\
+            " 4-выполнение операции ЛОГ.СДВИГ ВЛЕВО (<<)\n"\
+            " 5-выполнение операции ЛОГ.СДВИГ ВПРАВО (>>)\n"\
+            " 6-выполнение операции ИНВЕРСИИ (~)\n"\
+            " 7-завершить выполнение программы\n");
+}
+
+void IPrinter::printMessage(const char *message) {
+    ostream *out = getOutStream();
+    if (out == nullptr)
+        return;
+    (*out) << message;
 }
 
 class ConsolePrinter : public IPrinter {
@@ -96,13 +125,13 @@ public:
     FilePrinter() {
         isOpenFile = false;
         cout << "please enter file name for store application log :: ";
-        char *fileName = new char[LIMITS::maxFileNameSize+2];
+        char *fileName = new char[LIMITS::maxFileNameSize + 2];
         cin >> fileName;
-        if(strlen(fileName)>LIMITS::maxFileNameSize){
-            cout << "ОШИБКА: файл вывода не открыт для записи – в имени файла количество символов больше 37";
+        if (strlen(fileName) > LIMITS::maxFileNameSize) {
+            cout << "ОШИБКА: файл вывода не открыт для записи – в имени файла количество символов больше 37\n";
         }
-        if(fileName[strlen(fileName)-1]== '.'){
-            cout << "ОШИБКА: файл вывода не открыт для записи – в конце имени файла недопустимый символ (точка)";
+        if (fileName[strlen(fileName) - 1] == '.') {
+            cout << "ОШИБКА: файл вывода не открыт для записи – в конце имени файла недопустимый символ (точка)\n";
         }
         try {
 
@@ -120,10 +149,10 @@ public:
 
 protected:
     ofstream file;
-    bool  isOpenFile;
+    bool isOpenFile;
 
     virtual ostream *getOutStream() override {
-        if(!isOpenFile)
+        if (!isOpenFile)
             return nullptr;
         return &file;
     }
@@ -134,5 +163,7 @@ PrintComposer *PrintComposer::addConsolePrinter() {
 }
 
 PrintComposer *PrintComposer::addFilePrinter() {
-    return add(new FilePrinter());
+    IPrinter *printer;
+    printer = new FilePrinter();
+    return add(printer);
 }

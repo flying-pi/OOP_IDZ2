@@ -17,7 +17,7 @@ void TermianlUserInterface::startUserLoop() {
     bool isWork = true;
     int selectOperation;
     while (isWork) {
-        printInstruction();
+        logica.getPriinter()->printInstruction();
         cin >> selectOperation;
         switch ((command) (selectOperation - 1)) {
             case eAnd: {
@@ -45,7 +45,7 @@ void TermianlUserInterface::startUserLoop() {
                 break;
             }
             default:
-                cout << "ОШИБКА: введено число, не соответствующее пункту меню";
+                logica.getPriinter()->printMessage( "ОШИБКА: введено число, не соответствующее пункту меню");
             case eFinish: {
                 isWork = false;
                 break;
@@ -54,18 +54,6 @@ void TermianlUserInterface::startUserLoop() {
     }
 }
 
-void TermianlUserInterface::printInstruction() {
-    cout << ("ТЕСТИРОВАНИЕ ПОРАЗР.ЛОГИЧИСКИХ ОПЕРАЦИЙ\n"\
-            " 1-выполнение операции И (&)\n"\
-            " 2-выполнение операции ИЛИ (|)\n"\
-            " 3-выполнение операции ИСКЛ.ИЛИ (^)\n"\
-            " 4-выполнение операции ЛОГ.СДВИГ ВЛЕВО (<<)\n"\
-            " 5-выполнение операции ЛОГ.СДВИГ ВПРАВО (>>)\n"\
-            " 6-выполнение операции ИНВЕРСИИ (~)\n"\
-            " 7-завершить выполнение программы\n");
-
-
-}
 
 void TermianlUserInterface::executeOperration(const char *commandName,
                                               binaryLogicalFunction fun) {
@@ -76,13 +64,17 @@ void TermianlUserInterface::executeOperration(const char *commandName,
     try {
         a = readFromConsole();
     } catch (const char *error) {
-        cout << "ОШИБКА: в 1-м " << error << endl;
+        logica.getPriinter()->printMessage( "ОШИБКА: в 1-м ");
+        logica.getPriinter()->printMessage(error );
+        logica.getPriinter()->printMessage("\n");
         return;
     }
     try {
         b = readFromConsole();
     } catch (const char *error) {
-        cout << "ОШИБКА: в 2-м " << error << endl;
+        logica.getPriinter()->printMessage( "ОШИБКА: в 2-м ");
+        logica.getPriinter()->printMessage(error );
+        logica.getPriinter()->printMessage("\n");
         return;
     }
     logica.getPriinter()->printResult(commandName,(logica.*(fun))(a, b),a,b);
@@ -94,7 +86,9 @@ void TermianlUserInterface::executeOperration(const char *commandName,
     try {
         a = readFromConsole();
     } catch (const char *error) {
-        cout << "ОШИБКА: в " << error << endl;
+        logica.getPriinter()->printMessage( "ОШИБКА: в ");
+        logica.getPriinter()->printMessage(error );
+        logica.getPriinter()->printMessage("\n");
         return;
     }
     logica.getPriinter()->printResult(commandName,(logica.*(fun))(a),a);

@@ -16,7 +16,6 @@ private:
     typedef unsigned short (LOGIKA16::*binaryLogicalFunction)(unsigned short, unsigned short);
     typedef unsigned short (LOGIKA16::*unarLogicalFunction)(unsigned short);
     LOGIKA16 &logica;
-    void printInstruction();
     void executeOperration(const char *commandName,binaryLogicalFunction fun);
     void executeOperration(const char *commandName,unarLogicalFunction fun);
 };
