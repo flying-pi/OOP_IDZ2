@@ -48,6 +48,7 @@ IPrinter::printResult(const char *str, const unsigned int &operationResult, cons
         return;
 
     char *binaryValue = new char[17];
+    binaryValue[16] = '\0';
     (*out) << ("ÎÒÂÅÒ:\n");
     (*out) << setfill(' ') << setw(18) << dec << firstArgument << " 0x" << setfill('0') << setw(8) << hex
            << firstArgument << " ";
@@ -65,7 +66,7 @@ IPrinter::printResult(const char *str, const unsigned int &operationResult, cons
     (*out) << binaryValue;
     (*out) << "\n";
 
-    delete binaryValue;
+    //  delete[] binaryValue;
 }
 
 
@@ -75,6 +76,7 @@ void IPrinter::printResult(const char *str, const unsigned int &operationResult,
         return;
 
     char *binaryValue = new char[17];
+    binaryValue[16] = '\0';
     (*out) << ("ÎÒÂÅÒ:\n");
 
     (*out) << str << setfill(' ') << setw(9) << dec << firstArgument << " 0x" << setfill('0') << setw(8) << hex
@@ -88,7 +90,7 @@ void IPrinter::printResult(const char *str, const unsigned int &operationResult,
     (*out) << binaryValue;
     (*out) << "\n";
 
-    delete binaryValue;
+    //delete[] binaryValue;
 }
 
 void IPrinter::printInstruction() {
@@ -110,6 +112,13 @@ void IPrinter::printMessage(const char *message) {
     if (out == nullptr)
         return;
     (*out) << message;
+}
+
+void IPrinter::printMessage(int num) {
+    ostream *out = getOutStream();
+    if (out == nullptr)
+        return;
+    (*out) << num;
 }
 
 class ConsolePrinter : public IPrinter {
@@ -166,4 +175,19 @@ PrintComposer *PrintComposer::addFilePrinter() {
     IPrinter *printer;
     printer = new FilePrinter();
     return add(printer);
+}
+
+void PrintComposer::printMessage(const char *message) {
+    for (auto i:printers)
+        i->printMessage(message);
+}
+
+void PrintComposer::printMessage(int num) {
+    for (auto i : printers)
+        i->printMessage(num);
+}
+
+void PrintComposer::printInstruction() {
+    for (auto i : printers)
+        i->printInstruction();
 }

@@ -11,7 +11,7 @@ int main() {
     int countNums;
     cout << "enter count of nums :: ";
     std::cin >> countNums;
-    ofstream textOut("/Users/yurabraiko/temp/IDZ2_TEXT_OUT.txt");
+    ofstream textOut(DEFAULT_VALUES::textFilePath);
     FILE *binaryOut = fopen(DEFAULT_VALUES::binaryFilePath,"w");
     if(!textOut.is_open() ||!binaryOut)
     {
@@ -27,5 +27,6 @@ int main() {
     }
     textOut.close();
     fclose(binaryOut);
+	system("pause");
     return 0;
 }

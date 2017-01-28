@@ -17,11 +17,13 @@ public:
                              const unsigned int &val2);
 
 
-    void printResult(const char *str, const unsigned int &val3, const unsigned int &val1);
+    virtual void printResult(const char *str, const unsigned int &val3, const unsigned int &val1);
 
-    void printInstruction();
+    virtual void printInstruction();
 
-    void printMessage(const char*message);
+    virtual void printMessage(const char*message);
+
+    virtual void printMessage(int num);
 
     virtual ~IPrinter() {
 
@@ -49,6 +51,11 @@ public:
                      const unsigned int &val1,
                      const unsigned int &val2);
     void printResult(const char *str, const unsigned int &val3, const unsigned int &val1);
+
+    void printMessage(const char*message);
+    void printMessage(int num);
+
+    void printInstruction();
 
 protected:
     virtual ostream *getOutStream() {

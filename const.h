@@ -21,8 +21,10 @@ namespace LOGICAL_OPEATION_NAME {
 }
 
 namespace DEFAULT_VALUES{
-    static const char *binaryFilePath = "/Users/yurabraiko/temp/IDZ2_BINARY_OUT.bin";
-    static const char *textResultFilePath = "/Users/yurabraiko/temp/IDZ2_TEXT_RESULT_OUT.txt";
+    static const char *binaryFilePath = "./../IDZ2_BINARY_OUT.bin";
+	static const char *textResultFilePath = "./../IDZ2_TEXT_RESULT_OUT.txt";
+	static const char *textFilePath = "./../IDZ2_TEXT_OUT.txt";
+
     const unsigned short maxNum = 65535;
 }
 
